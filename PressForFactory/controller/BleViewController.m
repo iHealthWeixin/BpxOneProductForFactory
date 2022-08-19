@@ -53,7 +53,8 @@
 -(void)bleTool:(BleTool *)tool peripheral:(NSMutableArray *)peripherals{
     self.dataArray = peripherals;
     [self.tableView reloadData];
-    if (self.isAuto && self.dataArray.count>0) {
+    if (self.isAuto && self.dataArray.count>0 && ![self.bleTool isRuning]) {
+        NSLog(@"连接设备  %@",self.dataArray[0]);
         [self.bleTool connectPeripheral:self.dataArray[0]];
     }
 }
@@ -80,7 +81,7 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    if (!self.isAuto) {
+    if (!self.isAuto && ![self.bleTool isRuning]) {
         CBPeripheral *peripheral = self.dataArray[indexPath.row];
         [self.bleTool connectPeripheral:peripheral];
     }

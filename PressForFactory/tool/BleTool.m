@@ -44,11 +44,13 @@ static BleTool *_instance;
 
 -(instancetype)init{
     if(self = [super init]){
-        NSLog(@"ceshi=======");
+        self.currentPeripheral = nil;
         [self createDispatch];
     }
     return self;
 }
+
+
 
 
 - (void)createDispatch{
@@ -102,11 +104,7 @@ static BleTool *_instance;
 - (void)startScan {
     [self stopScan];
     [self.peripheralsArray removeAllObjects];
-    //不重复扫描已发现设备
-    //CBCentralManagerScanOptionAllowDuplicatesKey设置为NO表示不重复扫瞄已发现设备，为YES就是允许。
-    //CBCentralManagerOptionShowPowerAlertKey设置为YES就是在蓝牙未打开的时候显示弹框
     NSDictionary *option = @{CBCentralManagerScanOptionAllowDuplicatesKey : [NSNumber numberWithBool:NO],CBCentralManagerOptionShowPowerAlertKey:[NSNumber numberWithBool:YES]};
-    // 第一个参数填nil代表扫描所有蓝牙设备,第二个参数options也可以写nil
     [self.centralManager scanForPeripheralsWithServices:nil options:option];
 }
 
@@ -116,15 +114,18 @@ static BleTool *_instance;
                   RSSI:(NSNumber *)RSSI
 {
      CBPeripheral *customPeripheral = peripheral;
-//    NSLog(@"scanName =%@  ",self.scanName );
     if (customPeripheral.name!=nil && customPeripheral.name!=NULL && [[customPeripheral.name uppercaseString] containsString:self.scanName]) {
-//        NSLog(@"peripheral.name =%@   peripheralsArray =%@",customPeripheral.name ,self.peripheralsArray );
         if (![self.peripheralsArray containsObject:peripheral]) {
             [self.peripheralsArray addObject:peripheral];
             [self changgeData];
         }
     }
 }
+
+-(BOOL)isRuning{
+    return  self.currentPeripheral != nil;
+}
+
 - (void)changgeData{
     dispatch_async(dispatch_get_main_queue(), ^{
         if ([self.toolDelegate respondsToSelector:@selector(bleTool:peripheral:)]) {
@@ -139,6 +140,9 @@ static BleTool *_instance;
 
 -(void)centralManager:(CBCentralManager *)central didDisconnectPeripheral:(CBPeripheral *)peripheral error:(NSError *)error{
     NSLog(@"didDisconnectPeripheral 断开连接");
+    if (self.currentPeripheral == peripheral) {
+        self.currentPeripheral = nil;
+    }
     if ([self.peripheralsArray containsObject:peripheral]) {
         [self.peripheralsArray removeObject:peripheral];
         [self changgeData];
@@ -197,12 +201,14 @@ static BleTool *_instance;
 
 -(void)stopScan{
     [self.centralManager stopScan];
+    
 }
 
 //断开外设
 - (void)disconnect{
     if (self.currentPeripheral) {
         [self.centralManager cancelPeripheralConnection:self.currentPeripheral];
+        self.currentPeripheral = nil;
     }
 }
 

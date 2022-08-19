@@ -22,7 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)stopScan;
 - (void)disconnect;
 - (void)connectPeripheral:(CBPeripheral *)peripheral;
-
+- (BOOL)isRuning;
 @end
 
 NS_ASSUME_NONNULL_END
