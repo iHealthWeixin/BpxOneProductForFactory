@@ -31,7 +31,7 @@
 
 -(void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
-    [self.bleTool stopScan];
+//    [self.bleTool stopScan];
     [self.bleTool disconnect];
 }
 
@@ -69,6 +69,9 @@
     return self.dataArray.count;
 }
 
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return  60;
+}
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     CBPeripheral *peripheral = self.dataArray[indexPath.row];

@@ -31,7 +31,7 @@
 
 -(NSArray *)dataArray{
     if (!_dataArray) {
-        _dataArray = @[@"BPX1",@"BPX3",@"BPX3",@"BPX4"];
+        _dataArray = @[@"BPX1"];
     }
     return _dataArray;
 }
@@ -67,14 +67,17 @@
 {
    //返回cell 个数  如果有两个tableView  可以通过判断是哪一个tableView 然后处理
     return self.dataArray.count;
-   
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return  60;
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
    //处理每一个cell
     NSString *name = self.dataArray[indexPath.row];
     
     CustomTableviewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
-    cell.pressNameLable.text =[NSString stringWithFormat:@"机器型号：%@",name];
+    cell.pressNameLable.text =[NSString stringWithFormat:@"%@",name];
     return cell;
 }
 

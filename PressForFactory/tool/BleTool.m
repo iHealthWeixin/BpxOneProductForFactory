@@ -102,10 +102,13 @@ static BleTool *_instance;
 
 // 开始扫描周围可用蓝牙
 - (void)startScan {
-    [self stopScan];
     [self.peripheralsArray removeAllObjects];
-    NSDictionary *option = @{CBCentralManagerScanOptionAllowDuplicatesKey : [NSNumber numberWithBool:NO],CBCentralManagerOptionShowPowerAlertKey:[NSNumber numberWithBool:YES]};
-    [self.centralManager scanForPeripheralsWithServices:nil options:option];
+    [self scan];
+}
+
+-(void)scan{
+    [self stopScan];
+    [self.centralManager scanForPeripheralsWithServices:@[[CBUUID UUIDWithString:serviceUUID]] options:nil];
 }
 
 - (void)centralManager:(CBCentralManager *)central
@@ -114,6 +117,10 @@ static BleTool *_instance;
                   RSSI:(NSNumber *)RSSI
 {
      CBPeripheral *customPeripheral = peripheral;
+//    if ([[peripheral.name uppercaseString] containsString:@"BPX1"]) {
+        NSLog(@"name === %@",peripheral.name);
+//    }
+  
     if (customPeripheral.name!=nil && customPeripheral.name!=NULL && [[customPeripheral.name uppercaseString] containsString:self.scanName]) {
         if (![self.peripheralsArray containsObject:peripheral]) {
             [self.peripheralsArray addObject:peripheral];
@@ -141,12 +148,14 @@ static BleTool *_instance;
 -(void)centralManager:(CBCentralManager *)central didDisconnectPeripheral:(CBPeripheral *)peripheral error:(NSError *)error{
     NSLog(@"didDisconnectPeripheral 断开连接");
     if (self.currentPeripheral == peripheral) {
-        self.currentPeripheral = nil;
+        NSLog(@"didDisconnectPeripheral 断开连接 %@",peripheral.name);
+        [self disconnect];
     }
     if ([self.peripheralsArray containsObject:peripheral]) {
         [self.peripheralsArray removeObject:peripheral];
         [self changgeData];
     }
+    [self scan];
 }
 
 -(void)centralManager:(CBCentralManager *)central didConnectPeripheral:(CBPeripheral *)peripheral{
