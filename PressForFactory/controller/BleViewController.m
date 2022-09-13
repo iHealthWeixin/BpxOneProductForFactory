@@ -8,7 +8,7 @@
 #import "BleViewController.h"
 #import "CustomTableviewCell.h"
 #import "BleTool.h"
-#define identifier @"CustomTableviewCell"
+#define identi @"CustomTableviewCell"
 @interface BleViewController ()<UITableViewDataSource,UITabBarDelegate,BleToolDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property(nonatomic, strong) NSMutableArray * dataArray;
@@ -37,8 +37,8 @@
 
 -(void)initTableview{
    
-    [self.tableView registerNib:[UINib nibWithNibName:identifier bundle:nil] forCellReuseIdentifier:identifier];
-
+    [self.tableView registerNib:[UINib nibWithNibName:identi bundle:nil] forCellReuseIdentifier:identi];
+    
 }
 -(NSMutableArray *)dataArray{
     if (!_dataArray) {
@@ -75,9 +75,10 @@
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     CBPeripheral *peripheral = self.dataArray[indexPath.row];
-    CustomTableviewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
+    CustomTableviewCell *cell = [tableView dequeueReusableCellWithIdentifier:identi forIndexPath:indexPath];
     NSLog(@"peripheral = %@",peripheral);
     cell.pressNameLable.text = peripheral.name;
+    cell.sub.text = [NSString stringWithFormat:@"%@",peripheral.identifier];
     return cell;
 }
 

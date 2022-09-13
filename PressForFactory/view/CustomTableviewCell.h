@@ -11,6 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface CustomTableviewCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UILabel *pressNameLable;
+@property (weak, nonatomic) IBOutlet UILabel *sub;
 
 @property (weak, nonatomic) IBOutlet UIButton *selectBt;
 @end

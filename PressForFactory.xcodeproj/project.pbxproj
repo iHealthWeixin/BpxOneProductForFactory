@@ -506,9 +506,10 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = W66TA5F426;
+				DEVELOPMENT_TEAM = 8982T47U8J;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = PressForFactory/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "工装BPX1";
 				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "访问蓝牙用于数据读写";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
@@ -519,8 +520,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.jiuan.press.factory;
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jiuan.pressfactory;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -534,9 +535,10 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = W66TA5F426;
+				DEVELOPMENT_TEAM = 8982T47U8J;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = PressForFactory/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "工装BPX1";
 				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "访问蓝牙用于数据读写";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
@@ -547,8 +549,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.jiuan.press.factory;
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jiuan.pressfactory;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
