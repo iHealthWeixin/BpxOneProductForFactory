@@ -25,6 +25,7 @@
     self.bleTool.toolDelegate = self;
     self.bleTool.scanName = self.name;
     [self.bleTool  startScan];
+    self.title = @"BP List";
 }
 
 

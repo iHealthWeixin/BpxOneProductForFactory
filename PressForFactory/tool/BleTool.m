@@ -7,7 +7,7 @@
 
 #import "BleTool.h"
 #import <CoreBluetooth/CoreBluetooth.h>
-
+#import "TimeTool.h"
 @interface BleTool()<CBCentralManagerDelegate,CBPeripheralDelegate>
 @property(nonatomic, strong) CBCentralManager * centralManager;
 @property(nonatomic, strong) NSString * resultStr;
@@ -208,7 +208,8 @@ static BleTool *_instance;
 -(void)peripheral:(CBPeripheral *)peripheral didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error{
     if ([[NSString stringWithFormat:@"%@",characteristic.UUID] isEqual:notifyUUID] ) {
 //        NSLog(@"特征变化 %@",characteristic);
-        NSString * time =  [self getCurrentTimeInterval];
+        NSString * time =  [TimeTool getCurrentTimeInterval];
+        NSLog(@"time === %@",time);
         NSString *utc = [self toBinarySystemWithDecimalSystem:time];
 
 //        NSLog(@"utc === %@",utc);
@@ -350,7 +351,6 @@ static BleTool *_instance;
             break;
         }
     }
-    
     NSString * result = @"";
     for (int i = prepare.length - 1; i >= 0; i --)
     {
@@ -362,18 +362,9 @@ static BleTool *_instance;
 }
 
 
-//获取事件戳
-- (NSString *)getCurrentTimeInterval {
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init] ;
-    [formatter setDateStyle:NSDateFormatterMediumStyle];
-    [formatter setTimeStyle:NSDateFormatterShortStyle];
-    [formatter setDateFormat:@"YYYY-MM-dd HH:mm:ss"];
-    NSTimeZone* timeZone = [NSTimeZone timeZoneWithName:@"Asia/Shanghai"];
-    [formatter setTimeZone:timeZone];
-    NSDate *datenow = [NSDate date];
-//    NSLog(@"时间戳 == %@",[NSString stringWithFormat:@"%ld",(long)[datenow timeIntervalSince1970]]);
-    return   [NSString stringWithFormat:@"%ld",(long)[datenow timeIntervalSince1970]]  ;
-}
+
+
+
 
 -(void)stopScan{
     [self.centralManager stopScan];

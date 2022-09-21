@@ -8,6 +8,8 @@
 #import "ViewController.h"
 #import "BleViewController.h"
 #import "CustomTableviewCell.h"
+#import "TJAlert.h"
+#import "TimeTool.h"
 #define identifier @"CustomTableviewCell"
 
 @interface ViewController ()<UITableViewDelegate,UITableViewDataSource>
@@ -22,11 +24,38 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationItem.title = @"工装测试";
+    self.navigationItem.title = @"BP Factory TEST";
     [self.tableView registerNib:[UINib nibWithNibName:identifier bundle:nil] forCellReuseIdentifier:identifier];
     self.selectName = self.dataArray[0];
     self.start.layer.cornerRadius = 10;
+    UILabel *version = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 45, 100)];
+    version.text = @"V1.0.0";
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:version];
+    [self showAlert];
 }
+
+
+
+- (void)showAlert{
+    
+    NSString *currentTimeNet = [TimeTool getCurrentTimeNet];
+    NSString *getCurrentTimes = [TimeTool getCurrentTimes];
+    NSString *message = currentTimeNet==NULL?[NSString stringWithFormat:@"手机时间:%@",getCurrentTimes]:[NSString stringWithFormat:@"网络时间:%@\n手机时间:%@",currentTimeNet==NULL?@"":currentTimeNet,getCurrentTimes];
+    
+   
+    UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"操作前请确认手机时间是否正确" message:message preferredStyle:UIAlertControllerStyleAlert];
+     UIAlertAction *cancleAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+         
+     }];
+     UIAlertAction *confirAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        
+     }];
+     [alertVC addAction:cancleAction];
+     [alertVC addAction:confirAction];
+     [self presentViewController:alertVC animated:YES completion:nil];
+}
+
+
 
 
 -(NSArray *)dataArray{

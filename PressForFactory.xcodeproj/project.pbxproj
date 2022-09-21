@@ -23,6 +23,8 @@
 		702D1D6528AC93BB008C09FF /* BleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 702D1D6328AC93BB008C09FF /* BleViewController.m */; };
 		702D1D6628AC93BB008C09FF /* BleViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 702D1D6428AC93BB008C09FF /* BleViewController.xib */; };
 		702D1D6A28ACC24C008C09FF /* BleTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 702D1D6928ACC24C008C09FF /* BleTool.m */; };
+		7075DCDF28D2AEC600AEC04D /* TJAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 7075DCDE28D2AEC600AEC04D /* TJAlert.m */; };
+		708E8F1328D1D0650089CA41 /* TimeTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 708E8F1228D1D0650089CA41 /* TimeTool.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,6 +71,10 @@
 		702D1D6428AC93BB008C09FF /* BleViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BleViewController.xib; sourceTree = "<group>"; };
 		702D1D6828ACC24C008C09FF /* BleTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BleTool.h; sourceTree = "<group>"; };
 		702D1D6928ACC24C008C09FF /* BleTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BleTool.m; sourceTree = "<group>"; };
+		7075DCDD28D2AEC600AEC04D /* TJAlert.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TJAlert.h; sourceTree = "<group>"; };
+		7075DCDE28D2AEC600AEC04D /* TJAlert.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TJAlert.m; sourceTree = "<group>"; };
+		708E8F1128D1D0640089CA41 /* TimeTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TimeTool.h; sourceTree = "<group>"; };
+		708E8F1228D1D0650089CA41 /* TimeTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TimeTool.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -188,6 +194,10 @@
 			children = (
 				702D1D6828ACC24C008C09FF /* BleTool.h */,
 				702D1D6928ACC24C008C09FF /* BleTool.m */,
+				708E8F1128D1D0640089CA41 /* TimeTool.h */,
+				708E8F1228D1D0650089CA41 /* TimeTool.m */,
+				7075DCDD28D2AEC600AEC04D /* TJAlert.h */,
+				7075DCDE28D2AEC600AEC04D /* TJAlert.m */,
 			);
 			path = tool;
 			sourceTree = "<group>";
@@ -330,6 +340,8 @@
 				702D1D6528AC93BB008C09FF /* BleViewController.m in Sources */,
 				702D1D2A28AC7248008C09FF /* ViewController.m in Sources */,
 				702D1D6A28ACC24C008C09FF /* BleTool.m in Sources */,
+				7075DCDF28D2AEC600AEC04D /* TJAlert.m in Sources */,
+				708E8F1328D1D0650089CA41 /* TimeTool.m in Sources */,
 				702D1D2428AC7248008C09FF /* AppDelegate.m in Sources */,
 				702D1D2728AC7248008C09FF /* SceneDelegate.m in Sources */,
 			);
@@ -506,10 +518,10 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 8982T47U8J;
+				DEVELOPMENT_TEAM = 3Q553VZ29W;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = PressForFactory/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "工装BPX1";
+				INFOPLIST_KEY_CFBundleDisplayName = "BP Factory TEST";
 				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "访问蓝牙用于数据读写";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
@@ -535,10 +547,10 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 8982T47U8J;
+				DEVELOPMENT_TEAM = 3Q553VZ29W;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = PressForFactory/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "工装BPX1";
+				INFOPLIST_KEY_CFBundleDisplayName = "BP Factory TEST";
 				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "访问蓝牙用于数据读写";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
