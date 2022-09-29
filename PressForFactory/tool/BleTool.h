@@ -7,11 +7,13 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreBluetooth/CoreBluetooth.h>
-NS_ASSUME_NONNULL_BEGIN
 
+NS_ASSUME_NONNULL_BEGIN
+@class ZHMutableArray;
 @class BleTool;
+@class CBCustomPeripheral;
 @protocol  BleToolDelegate
--(void)bleTool:(BleTool *)tool peripheral:(NSMutableArray *)peripherals;
+-(void)bleTool:(BleTool *)tool peripheral:(ZHMutableArray *)peripherals;
 @end
 
 @interface BleTool : NSObject
@@ -21,7 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)startScan;
 - (void)stopScan;
 - (void)disconnect;
-- (void)connectPeripheral:(CBPeripheral *)peripheral;
+- (void)connectPeripheral:(CBCustomPeripheral *)peripheral;
 - (BOOL)isRuning;
 @end
 

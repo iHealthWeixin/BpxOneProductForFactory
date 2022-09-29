@@ -8,11 +8,15 @@
 #import "BleTool.h"
 #import <CoreBluetooth/CoreBluetooth.h>
 #import "TimeTool.h"
+#import "CBCustomPeripheral.h"
+#import "ZHMutableArray.h"
 @interface BleTool()<CBCentralManagerDelegate,CBPeripheralDelegate>
 @property(nonatomic, strong) CBCentralManager * centralManager;
 @property(nonatomic, strong) NSString * resultStr;
 @property(nonatomic, strong) NSMutableArray * services;
-@property(nonatomic, strong) NSMutableArray * peripheralsArray;
+@property(nonatomic, strong) ZHMutableArray * peripheralsArray;
+@property(nonatomic, strong) NSMutableArray * deletePers;//需要删除的外设
+@property(nonatomic, assign) BOOL  isAddingData;//是否在添加数据
 @property(nonatomic, strong) CBPeripheral * currentPeripheral;
 @property(nonatomic, strong) CBCharacteristic * characteristicWrite;
 
@@ -34,13 +38,27 @@ static BleTool *_instance;
    return _instance;
 }
 
--(NSMutableArray *)peripheralsArray{
+-(ZHMutableArray *)peripheralsArray{
     if (!_peripheralsArray) {
-        _peripheralsArray = [NSMutableArray array];
+        _peripheralsArray = [[ZHMutableArray alloc] init];
     }
     return _peripheralsArray;
 }
 
+
+-(NSMutableArray *)deletePers{
+    if (!_deletePers) {
+        _deletePers = [NSMutableArray array];
+    }
+    return  _deletePers;
+}
+
+-(BOOL)isAddingData{
+    if (!_isAddingData) {
+        _isAddingData = NO;
+    }
+    return _isAddingData;
+}
 
 -(instancetype)init{
     if(self = [super init]){
@@ -52,12 +70,10 @@ static BleTool *_instance;
 
 
 
-
 - (void)createDispatch{
     dispatch_queue_t centralQueue = dispatch_queue_create("blesdk",DISPATCH_QUEUE_SERIAL);
     NSDictionary *options = @{CBCentralManagerOptionShowPowerAlertKey : [NSNumber numberWithBool:YES], CBCentralManagerOptionRestoreIdentifierKey : @"blesdk"};
     self.centralManager = [[CBCentralManager alloc] initWithDelegate:self queue:centralQueue options:options];
-                                        
     self.resultStr = @"";
     self.services = [[NSMutableArray alloc]init];
 }
@@ -116,21 +132,36 @@ static BleTool *_instance;
      advertisementData:(NSDictionary *)advertisementData
                   RSSI:(NSNumber *)RSSI
 {
-     CBPeripheral *customPeripheral = peripheral;
-//    if ([[peripheral.name uppercaseString] containsString:@"BPX1"]) {
-//        NSLog(@"name === %@",peripheral.name);
-//    }
-  
-    if (customPeripheral.name!=nil && customPeripheral.name!=NULL && [[customPeripheral.name uppercaseString] containsString:self.scanName]) {
-        if (![self.peripheralsArray containsObject:peripheral]) {
-            [self.peripheralsArray addObject:peripheral];
+    NSString *localName = [advertisementData objectForKey:@"kCBAdvDataLocalName"];
+    if (localName!=nil && localName!=NULL && [[localName uppercaseString] containsString:self.scanName]) {
+        NSLog(@"localName ================= %@",peripheral);
+        CBCustomPeripheral * per = [[CBCustomPeripheral alloc] init];
+        per.peripheral = peripheral;
+        per.name = localName;
+        BOOL isExist = NO;
+        for (int i= 0; i<self.peripheralsArray.count; i++) {
+            self.isAddingData = YES;
+           CBCustomPeripheral *per =  [self.peripheralsArray objectAtIndex:i];
+            if (per.peripheral == peripheral) {
+                isExist = YES;
+            }
+            
+        }
+        self.isAddingData = NO;
+        [self removeAndRefresh];
+        if (!isExist) {
+            [self.peripheralsArray addObject:per];
+            NSLog(@"peripheralsArray == %ld",self.peripheralsArray.count);
             [self changgeData];
         }
     }
 }
 
+
+
 -(BOOL)isRuning{
-    return  self.currentPeripheral != nil;
+    NSLog(@"isRuning == %@ ",self.currentPeripheral);
+    return  self.currentPeripheral != nil ;
 }
 
 - (void)changgeData{
@@ -145,7 +176,6 @@ static BleTool *_instance;
 
 
 -(void)centralManager:(CBCentralManager *)central didDisconnectPeripheral:(CBPeripheral *)peripheral error:(NSError *)error{
-    NSLog(@"didDisconnectPeripheral 断开连接");
     if (self.currentPeripheral == peripheral) {
         NSLog(@"didDisconnectPeripheral 断开连接 %@",peripheral.name);
         [self disconnect];
@@ -166,6 +196,7 @@ static BleTool *_instance;
     NSLog(@"didConnectPeripheral 已连接  %@",peripheral.name);
     peripheral.delegate = self;
     self.currentPeripheral = peripheral;
+    NSLog(@" self.currentPeripheral  = %@ ",self.currentPeripheral);
     CBUUID *uuids = [CBUUID UUIDWithString:serviceUUID];
     [peripheral discoverServices:@[uuids]];
 }
@@ -248,11 +279,29 @@ static BleTool *_instance;
 
 
 - (void)removeAndRescan:(CBPeripheral *)peripheral{
-    if ([self.peripheralsArray containsObject:peripheral]) {
-        [self.peripheralsArray removeObject:peripheral];
+    
+    for (int i = 0; i< self.peripheralsArray.count; i++) {
+        CBCustomPeripheral *per = [self.peripheralsArray objectAtIndex:i];
+        if (per.peripheral == peripheral) {
+            [self.deletePers addObject:per];
+       }
+    }
+    [self removeAndRefresh];
+    [self scan];
+}
+
+
+- (void)removeAndRefresh{
+    NSLog(@"removeAndRefresh   self.isAddingData = %d",self.isAddingData);
+    if (!self.isAddingData) {
+        NSLog(@"删除前  %ld  self.deletePers==%ld",self.peripheralsArray.count,self.deletePers.count);
+        NSMutableArray *deleArr  = [NSMutableArray arrayWithArray:self.deletePers];
+        [self.peripheralsArray removeObjectsInArray:deleArr];
+        [self.deletePers removeObjectsInArray:deleArr];
+        NSLog(@"删除后  %ld  self.deletePers==%ld",self.peripheralsArray.count,self.deletePers.count);
         [self changgeData];
     }
-    [self scan];
+    
 }
 
 
@@ -309,12 +358,6 @@ static BleTool *_instance;
 }
 
 - (NSString *)getByte7:(NSString *)utc{
-//    NSLog(@"getByte7 == %@",[utc substringWithRange:NSMakeRange (utc.length-24, 8)]);
-    
-//    NSLog(@"getByte7 change1 == %@",[self getHexByBinary:[utc substringWithRange:NSMakeRange (utc.length-24, 8)]]);
-//    int seven = [[self getHexByBinary:[utc substringWithRange:NSMakeRange (utc.length-24, 8)]] intValue] ;
-//    NSLog(@"seven = %d",seven);
-    
     return [self getHexByBinary:[utc substringWithRange:NSMakeRange (utc.length-24, 8)]];
 }
 
@@ -373,14 +416,15 @@ static BleTool *_instance;
 
 //断开外设
 - (void)disconnect{
-    if (self.currentPeripheral) {
+    if (self.currentPeripheral ) {
+        NSLog(@"断开外设  disconnect ");
         [self.centralManager cancelPeripheralConnection:self.currentPeripheral];
         self.currentPeripheral = nil;
     }
 }
 
-- (void)connectPeripheral:(CBPeripheral *)peripheral{
-    [self.centralManager connectPeripheral:peripheral options:nil];
+- (void)connectPeripheral:(CBCustomPeripheral *)peripheral{
+    [self.centralManager connectPeripheral:peripheral.peripheral options:nil];
 //    NSLog(@"connectPeripheral");
 }
     

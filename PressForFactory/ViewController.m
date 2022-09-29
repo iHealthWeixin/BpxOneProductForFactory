@@ -29,7 +29,7 @@
     self.selectName = self.dataArray[0];
     self.start.layer.cornerRadius = 10;
     UILabel *version = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 45, 100)];
-    version.text = @"V1.0.0";
+    version.text = @"V1.0.1";
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:version];
     [self showAlert];
 }
